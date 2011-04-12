@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Bippo Indonesia :: OSS :: Smack
-Bundle-SymbolicName: id.co.bippo.oss.smack
+Bundle-SymbolicName: smack-smackx-osgi
 Bundle-Version: 3.1.0.qualifier
 Bundle-Vendor: Bippo Indonesia, The Apache Software Foundation, Ignite Realtime
 Export-Package: org.jivesoftware.smack;version="3.1.0";
