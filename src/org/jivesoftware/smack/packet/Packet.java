@@ -1,7 +1,7 @@
 /**
  * $RCSfile$
- * $Revision: 8187 $
- * $Date: 2007-05-04 11:35:47 -0700 (Fri, 04 May 2007) $
+ * $Revision: 11824 $
+ * $Date: 2010-08-16 00:13:05 +0900 (Mon, 16 Aug 2010) $
  *
  * Copyright 2003-2007 Jive Software.
  *
@@ -416,17 +416,14 @@ public abstract class Packet {
         return this.xmlns;
     }
 
-    protected static String parseXMLLang(String language) {
-        if (language == null || "".equals(language)) {
-            language = DEFAULT_LANGUAGE;
-        }
-        return language;
-    }
-
-    protected static String getDefaultLanguage() {
+    /**
+     * Returns the default language used for all messages containing localized content.
+     * 
+     * @return the default language
+     */
+    public static String getDefaultLanguage() {
         return DEFAULT_LANGUAGE;
     }
-
 
     public boolean equals(Object o) {
         if (this == o) return true;

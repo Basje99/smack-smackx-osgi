@@ -170,6 +170,10 @@ public abstract class AdHocCommand {
         data.addNote(note);
     }
 
+    public String getRaw() {
+        return data.getChildElementXML();
+    }
+
     /**
      * Returns the form of the current stage. Usually it is the form that must
      * be answered to execute the next action. If that is the case it should be
@@ -206,7 +210,7 @@ public abstract class AdHocCommand {
      * command. It is invoked on every command. If there is a problem executing
      * the command it throws an XMPPException.
      * 
-     * @throws XMPPException if there is a problem executing the command.
+     * @throws XMPPException if there is an error executing the command.
      */
     public abstract void execute() throws XMPPException;
 

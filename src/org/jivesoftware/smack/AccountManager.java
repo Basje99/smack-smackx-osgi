@@ -1,7 +1,7 @@
 /**
  * $RCSfile$
- * $Revision: 7071 $
- * $Date: 2007-02-11 16:59:05 -0800 (Sun, 11 Feb 2007) $
+ * $Revision: 11613 $
+ * $Date: 2010-02-09 20:55:56 +0900 (Tue, 09 Feb 2010) $
  *
  * Copyright 2003-2007 Jive Software.
  *
@@ -36,12 +36,12 @@ import java.util.Map;
 /**
  * Allows creation and management of accounts on an XMPP server.
  *
- * @see XMPPConnection#getAccountManager()
+ * @see Connection#getAccountManager()
  * @author Matt Tucker
  */
 public class AccountManager {
 
-    private XMPPConnection connection;
+    private Connection connection;
     private Registration info = null;
 
     /**
@@ -57,7 +57,7 @@ public class AccountManager {
      *
      * @param connection a connection to a XMPP server.
      */
-    public AccountManager(XMPPConnection connection) {
+    public AccountManager(Connection connection) {
         this.connection = connection;
     }
 

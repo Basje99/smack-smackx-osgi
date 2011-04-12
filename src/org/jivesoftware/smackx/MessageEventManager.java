@@ -1,7 +1,7 @@
 /**
  * $RCSfile$
- * $Revision: 7071 $
- * $Date: 2007-02-11 16:59:05 -0800 (Sun, 11 Feb 2007) $
+ * $Revision: 11613 $
+ * $Date: 2010-02-09 20:55:56 +0900 (Tue, 09 Feb 2010) $
  *
  * Copyright 2003-2007 Jive Software.
  *
@@ -22,12 +22,17 @@ package org.jivesoftware.smackx;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import org.jivesoftware.smack.*;
-import org.jivesoftware.smack.filter.*;
-import org.jivesoftware.smack.packet.*;
-import org.jivesoftware.smackx.packet.*;
+import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.Connection;
+import org.jivesoftware.smack.filter.PacketExtensionFilter;
+import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smackx.packet.MessageEvent;
 
 /**
  * Manages message events requests and notifications. A MessageEventManager provides a high
@@ -38,10 +43,10 @@ import org.jivesoftware.smackx.packet.*;
  */
 public class MessageEventManager {
 
-    private List messageEventNotificationListeners = new ArrayList();
-    private List messageEventRequestListeners = new ArrayList();
+    private List<MessageEventNotificationListener> messageEventNotificationListeners = new ArrayList<MessageEventNotificationListener>();
+    private List<MessageEventRequestListener> messageEventRequestListeners = new ArrayList<MessageEventRequestListener>();
 
-    private XMPPConnection con;
+    private Connection con;
 
     private PacketFilter packetFilter = new PacketExtensionFilter("x", "jabber:x:event");
     private PacketListener packetListener;
@@ -49,9 +54,9 @@ public class MessageEventManager {
     /**
      * Creates a new message event manager.
      *
-     * @param con an XMPPConnection.
+     * @param con a Connection to a XMPP server.
      */
-    public MessageEventManager(XMPPConnection con) {
+    public MessageEventManager(Connection con) {
         this.con = con;
         init();
     }
@@ -298,7 +303,8 @@ public class MessageEventManager {
         }
     }
 
-    public void finalize() {
+    protected void finalize() throws Throwable {
         destroy();
+        super.finalize();
     }
 }

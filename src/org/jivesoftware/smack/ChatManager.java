@@ -80,9 +80,9 @@ public class ChatManager {
     private Map<PacketInterceptor, PacketFilter> interceptors
             = new WeakHashMap<PacketInterceptor, PacketFilter>();
 
-    private XMPPConnection connection;
+    private Connection connection;
 
-    ChatManager(XMPPConnection connection) {
+    ChatManager(Connection connection) {
         this.connection = connection;
 
         PacketFilter filter = new PacketFilter() {
@@ -102,13 +102,13 @@ public class ChatManager {
                 Message message = (Message) packet;
                 Chat chat;
                 if (message.getThread() == null) {
-                    chat = getUserChat(StringUtils.parseBareAddress(message.getFrom()));
+                	chat = getUserChat(message.getFrom());
                 }
                 else {
                     chat = getThreadChat(message.getThread());
                     if (chat == null) {
                         // Try to locate the chat based on the sender of the message
-                        chat = getUserChat(StringUtils.parseBareAddress(message.getFrom()));
+                    	chat = getUserChat(message.getFrom());
                     }
                 }
 

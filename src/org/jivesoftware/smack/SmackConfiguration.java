@@ -1,7 +1,7 @@
 /**
  * $RCSfile$
- * $Revision: 10846 $
- * $Date: 2008-10-23 22:17:50 -0700 (Thu, 23 Oct 2008) $
+ * $Revision: 11821 $
+ * $Date: 2010-08-15 20:57:11 +0900 (Sun, 15 Aug 2010) $
  *
  * Copyright 2003-2007 Jive Software.
  *
@@ -50,6 +50,9 @@ public final class SmackConfiguration {
     private static int keepAliveInterval = 30000;
     private static Vector<String> defaultMechs = new Vector<String>();
 
+    private static boolean localSocks5ProxyEnabled = true;
+    private static int localSocks5ProxyPort = 7777;
+
     private SmackConfiguration() {
     }
 
@@ -90,6 +93,12 @@ public final class SmackConfiguration {
                                 }
                                 else if (parser.getName().equals("mechName")) {
                                     defaultMechs.add(parser.nextText());
+                                } else if (parser.getName().equals("localSocks5ProxyEnabled")) {
+                                    localSocks5ProxyEnabled = Boolean.parseBoolean(parser
+                                            .nextText());
+                                } else if (parser.getName().equals("localSocks5ProxyPort")) {
+                                    localSocks5ProxyPort = parseIntProperty(parser,
+                                            localSocks5ProxyPort);
                                 }
                             }
                             eventType = parser.next();
@@ -228,6 +237,43 @@ public final class SmackConfiguration {
      */
     public static List<String> getSaslMechs() {
         return defaultMechs;
+    }
+
+    /**
+     * Returns true if the local Socks5 proxy should be started. Default is true.
+     * 
+     * @return if the local Socks5 proxy should be started
+     */
+    public static boolean isLocalSocks5ProxyEnabled() {
+        return localSocks5ProxyEnabled;
+    }
+
+    /**
+     * Sets if the local Socks5 proxy should be started. Default is true.
+     * 
+     * @param localSocks5ProxyEnabled if the local Socks5 proxy should be started
+     */
+    public static void setLocalSocks5ProxyEnabled(boolean localSocks5ProxyEnabled) {
+        SmackConfiguration.localSocks5ProxyEnabled = localSocks5ProxyEnabled;
+    }
+
+    /**
+     * Return the port of the local Socks5 proxy. Default is 7777.
+     * 
+     * @return the port of the local Socks5 proxy
+     */
+    public static int getLocalSocks5ProxyPort() {
+        return localSocks5ProxyPort;
+    }
+
+    /**
+     * Sets the port of the local Socks5 proxy. Default is 7777. If you set the port to a negative
+     * value Smack tries the absolute value and all following until it finds an open port.
+     * 
+     * @param localSocks5ProxyPort the port of the local Socks5 proxy to set
+     */
+    public static void setLocalSocks5ProxyPort(int localSocks5ProxyPort) {
+        SmackConfiguration.localSocks5ProxyPort = localSocks5ProxyPort;
     }
 
     private static void parseClassToLoad(XmlPullParser parser) throws Exception {

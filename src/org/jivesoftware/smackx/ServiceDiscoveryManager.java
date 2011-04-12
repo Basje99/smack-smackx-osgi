@@ -1,7 +1,7 @@
 /**
  * $RCSfile$
- * $Revision: 9920 $
- * $Date: 2008-02-15 08:32:46 -0800 (Fri, 15 Feb 2008) $
+ * $Revision: 11613 $
+ * $Date: 2010-02-09 20:55:56 +0900 (Tue, 09 Feb 2010) $
  *
  * Copyright 2003-2007 Jive Software.
  *
@@ -30,8 +30,6 @@ import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smackx.packet.DiscoverInfo;
 import org.jivesoftware.smackx.packet.DiscoverItems;
 import org.jivesoftware.smackx.packet.DataForm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -49,52 +47,46 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ServiceDiscoveryManager {
 
-	private static Logger logger = LoggerFactory.getLogger(ServiceDiscoveryManager.class);
-	
     private static String identityName = "Smack";
     private static String identityType = "pc";
 
-    private static Map<XMPPConnection, ServiceDiscoveryManager> instances =
-            new ConcurrentHashMap<XMPPConnection, ServiceDiscoveryManager>();
+    private static Map<Connection, ServiceDiscoveryManager> instances =
+            new ConcurrentHashMap<Connection, ServiceDiscoveryManager>();
 
-    private XMPPConnection connection;
+    private Connection connection;
     private final List<String> features = new ArrayList<String>();
     private DataForm extendedInfo = null;
     private Map<String, NodeInformationProvider> nodeInformationProviders =
             new ConcurrentHashMap<String, NodeInformationProvider>();
 
     // Create a new ServiceDiscoveryManager on every established connection
-    public static void staticInit() {
-    	logger.debug("Adding ConnectionCreationListener to XMPPConnection");
-        XMPPConnection.addConnectionCreationListener(new ConnectionCreationListener() {
-            public void connectionCreated(XMPPConnection connection) {
-            	logger.debug("Instantiating a ServiceDiscoveryManager for {}", connection);
+    static {
+        Connection.addConnectionCreationListener(new ConnectionCreationListener() {
+            public void connectionCreated(Connection connection) {
                 new ServiceDiscoveryManager(connection);
             }
         });
     }
 
     /**
-     * Creates a new ServiceDiscoveryManager for a given XMPPConnection. This means that the 
+     * Creates a new ServiceDiscoveryManager for a given Connection. This means that the 
      * service manager will respond to any service discovery request that the connection may
      * receive. 
      * 
      * @param connection the connection to which a ServiceDiscoveryManager is going to be created.
      */
-    public ServiceDiscoveryManager(XMPPConnection connection) {
+    public ServiceDiscoveryManager(Connection connection) {
         this.connection = connection;
         init();
     }
 
     /**
-     * Returns the ServiceDiscoveryManager instance associated with a given XMPPConnection.
+     * Returns the ServiceDiscoveryManager instance associated with a given Connection.
      * 
      * @param connection the connection used to look for the proper ServiceDiscoveryManager.
-     * @return the ServiceDiscoveryManager associated with a given XMPPConnection.
+     * @return the ServiceDiscoveryManager associated with a given Connection.
      */
-    public static ServiceDiscoveryManager getInstanceFor(XMPPConnection connection) {
-    	logger.debug("getInstanceFor: instances.size={} connectionID={} connection={}",
-    			new Object[] {instances.size(), connection.getConnectionID(), connection});
+    public static ServiceDiscoveryManager getInstanceFor(Connection connection) {
         return instances.get(connection);
     }
 
@@ -149,12 +141,8 @@ public class ServiceDiscoveryManager {
      * service discovery request. 
      */
     private void init() {
-    	logger.debug("Register ServiceDiscoveryManager instance and associate it with {}",
-    			connection);
         // Register the new instance and associate it with the connection 
         instances.put(connection, this);
-        logger.debug("ServiceDiscoveryManager.instances now contains {} objects",
-        		instances.size());
         // Add a listener to the connection that removes the registered instance when
         // the connection is closed
         connection.addConnectionListener(new ConnectionListener() {
@@ -484,8 +472,6 @@ public class ServiceDiscoveryManager {
      * @throws XMPPException if the operation failed for some reason.
      */
     public DiscoverItems discoverItems(String entityID, String node) throws XMPPException {
-    	logger.debug("discoverItems() entityID={} node={}",
-    			entityID, node);
         // Discover the entity's items
         DiscoverItems disco = new DiscoverItems();
         disco.setType(IQ.Type.GET);
@@ -508,8 +494,6 @@ public class ServiceDiscoveryManager {
         if (result.getType() == IQ.Type.ERROR) {
             throw new XMPPException(result.getError());
         }
-        logger.debug("discoverItems: xmlns={}, id={} from={} to={} type={} child={}",
-        		new Object[] {result.getXmlns(), result.getPacketID(), result.getFrom(), result.getTo(), result.getType(), result.getChildElementXML()} );
         return (DiscoverItems) result;
     }
 

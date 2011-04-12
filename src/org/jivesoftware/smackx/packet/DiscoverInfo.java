@@ -1,7 +1,7 @@
 /**
  * $RCSfile$
- * $Revision: 7071 $
- * $Date: 2007-02-11 16:59:05 -0800 (Sun, 11 Feb 2007) $
+ * $Revision: 12007 $
+ * $Date: 2010-12-05 01:28:52 +0900 (Sun, 05 Dec 2010) $
  *
  * Copyright 2003-2007 Jive Software.
  *
@@ -62,7 +62,7 @@ public class DiscoverInfo extends IQ {
      *
      * @return an Iterator on the discovered features of an XMPP entity
      */
-    Iterator<Feature> getFeatures() {
+    public Iterator<Feature> getFeatures() {
         synchronized (features) {
             return Collections.unmodifiableList(features).iterator();
         }

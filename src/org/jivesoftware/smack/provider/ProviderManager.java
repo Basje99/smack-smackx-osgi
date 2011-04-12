@@ -1,7 +1,7 @@
 /**
  * $RCSfile$
- * $Revision: 7071 $
- * $Date: 2007-02-11 16:59:05 -0800 (Sun, 11 Feb 2007) $
+ * $Revision: 11613 $
+ * $Date: 2010-02-09 20:55:56 +0900 (Tue, 09 Feb 2010) $
  *
  * Copyright 2003-2007 Jive Software.
  *
@@ -22,8 +22,6 @@ package org.jivesoftware.smack.provider;
 
 import org.jivesoftware.smack.packet.IQ;
 import org.jivesoftware.smack.packet.PacketExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xmlpull.mxp1.MXParser;
 import org.xmlpull.v1.XmlPullParser;
 
@@ -111,9 +109,9 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * It is possible to provide a custom provider manager instead of the default implementation
  * provided by Smack. If you want to provide your own provider manager then you need to do it
- * before creating any {@link org.jivesoftware.smack.XMPPConnection} by sending the static
+ * before creating any {@link org.jivesoftware.smack.Connection} by sending the static
  * {@link #setInstance(ProviderManager)} message. Trying to change the provider manager after
- * an XMPPConnection was created will result in an {@link IllegalStateException} error.
+ * an Connection was created will result in an {@link IllegalStateException} error.
  *
  * @author Matt Tucker
  */
@@ -123,8 +121,6 @@ public class ProviderManager {
 
     private Map<String, Object> extensionProviders = new ConcurrentHashMap<String, Object>();
     private Map<String, Object> iqProviders = new ConcurrentHashMap<String, Object>();
-
-	private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * Returns the only ProviderManager valid instance.  Use {@link #setInstance(ProviderManager)}
@@ -141,9 +137,9 @@ public class ProviderManager {
     }
 
     /**
-     * Sets the only ProviderManager valid instance to be used by all XMPPConnections. If you
+     * Sets the only ProviderManager valid instance to be used by all Connections. If you
      * want to provide your own provider manager then you need to do it before creating
-     * any XMPPConnection. Otherwise an IllegalStateException will be thrown.
+     * any Connection. Otherwise an IllegalStateException will be thrown.
      *
      * @param providerManager the only ProviderManager valid instance to be used.
      * @throws IllegalStateException if a provider manager was already configued.
@@ -156,14 +152,11 @@ public class ProviderManager {
     }
 
     protected void initialize() {
-    	logger.debug("initialize ProviderManager");
         // Load IQ processing providers.
         try {
             // Get an array of class loaders to try loading the providers files from.
             ClassLoader[] classLoaders = getClassLoaders();
-            logger.debug("Scanning {} classloaders...", classLoaders.length);
             for (ClassLoader classLoader : classLoaders) {
-            	logger.debug("Scanning classloader: {}", classLoader);
                 Enumeration providerEnum = classLoader.getResources(
                         "META-INF/smack.providers");
                 while (providerEnum.hasMoreElements()) {
@@ -190,10 +183,6 @@ public class ProviderManager {
                                     // Only add the provider for the namespace if one isn't
                                     // already registered.
                                     String key = getProviderKey(elementName, namespace);
-                                    
-                                    logger.debug("Got iqProvider: element={} namespace={} class={} key={} existing={}",
-                                    		new Object[] { elementName, namespace, className, key, iqProviders.containsKey(key) }); 
-                                    
                                     if (!iqProviders.containsKey(key)) {
                                         // Attempt to load the provider class and then create
                                         // a new instance if it's an IQProvider. Otherwise, if it's
@@ -227,10 +216,6 @@ public class ProviderManager {
                                     // Only add the provider for the namespace if one isn't
                                     // already registered.
                                     String key = getProviderKey(elementName, namespace);
-                                    
-                                    logger.debug("Got extensionProvider: element={} namespace={} class={} key={} existing={}",
-                                    		new Object[] { elementName, namespace, className, key, iqProviders.containsKey(key) }); 
-                                    
                                     if (!extensionProviders.containsKey(key)) {
                                         // Attempt to load the provider class and then create
                                         // a new instance if it's a Provider. Otherwise, if it's
@@ -273,7 +258,6 @@ public class ProviderManager {
         catch (Exception e) {
             e.printStackTrace();
         }
-        logger.debug("IQ providers={} Extension providers={}", iqProviders.size(), extensionProviders.size());
     }
 
     /**

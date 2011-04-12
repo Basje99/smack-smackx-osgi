@@ -1,7 +1,7 @@
 /**
  * $RCSfile$
- * $Revision: 7071 $
- * $Date: 2007-02-11 16:59:05 -0800 (Sun, 11 Feb 2007) $
+ * $Revision: 11613 $
+ * $Date: 2010-02-09 20:55:56 +0900 (Tue, 09 Feb 2010) $
  *
  * Copyright 2003-2007 Jive Software.
  *
@@ -29,7 +29,7 @@ import org.jivesoftware.smack.packet.Packet;
  * opposite approach to the functionality provided by a {@link PacketCollector}
  * which lets you block while waiting for results.
  *
- * @see XMPPConnection#addPacketListener(PacketListener, org.jivesoftware.smack.filter.PacketFilter)
+ * @see Connection#addPacketListener(PacketListener, org.jivesoftware.smack.filter.PacketFilter)
  * @author Matt Tucker
  */
 public interface PacketListener {
