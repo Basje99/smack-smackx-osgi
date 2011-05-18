@@ -48,6 +48,3 @@ Export-Package:
  org.jivesoftware.smackx.workgroup.user,
  org.jivesoftware.smackx.workgroup.util
 Bundle-ClassPath: bin/
-Import-Package: 
- org.xmlpull.mxp1,
- org.xmlpull.v1
