@@ -4,6 +4,9 @@ Bundle-SymbolicName: org.jivesoftware.smackx
 Bundle-Version: 3.1.0.qualifier
 Bundle-Vendor: Bug Labs, Inc., The Apache Software Foundation, Ignite Realtime
 Bundle-Description: Smack and Smack-x library in OSGi friendly format.
+Import-Package: 
+ javax.net,
+ javax.net.ssl
 Export-Package: 
  org.jivesoftware.smack,
  org.jivesoftware.smack.debugger,
