@@ -6,7 +6,12 @@ Bundle-Vendor: Bug Labs, Inc., The Apache Software Foundation, Ignite Realtime
 Bundle-Description: Smack and Smack-x library in OSGi friendly format.
 Import-Package: 
  javax.net,
- javax.net.ssl
+ javax.net.ssl,
+ javax.security.auth,
+ javax.security.auth.callback,
+ javax.security.sasl,
+ javax.naming,
+ javax.naming.directory
 Export-Package: 
  org.jivesoftware.smack,
  org.jivesoftware.smack.debugger,
