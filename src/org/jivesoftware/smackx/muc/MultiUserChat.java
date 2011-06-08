@@ -111,29 +111,33 @@ public class MultiUserChat {
                 // Set on every established connection that this client supports the Multi-User
                 // Chat protocol. This information will be used when another client tries to
                 // discover whether this client supports MUC or not.
-                ServiceDiscoveryManager.getInstanceFor(connection).addFeature(discoNamespace);
-                // Set the NodeInformationProvider that will provide information about the
-                // joined rooms whenever a disco request is received
-                ServiceDiscoveryManager.getInstanceFor(connection).setNodeInformationProvider(
-                    discoNode,
-                    new NodeInformationProvider() {
-                        public List<DiscoverItems.Item> getNodeItems() {
-                            List<DiscoverItems.Item> answer = new ArrayList<DiscoverItems.Item>();
-                            Iterator<String> rooms=MultiUserChat.getJoinedRooms(connection);
-                            while (rooms.hasNext()) {
-                                answer.add(new DiscoverItems.Item(rooms.next()));
-                            }
-                            return answer;
-                        }
-
-                        public List<String> getNodeFeatures() {
-                            return null;
-                        }
-
-                        public List<DiscoverInfo.Identity> getNodeIdentities() {
-                            return null;
-                        }
-                    });
+            	ServiceDiscoveryManager sdm = ServiceDiscoveryManager.getInstanceFor(connection);
+            	
+            	if (sdm != null) {
+	                sdm.addFeature(discoNamespace);
+	                // Set the NodeInformationProvider that will provide information about the
+	                // joined rooms whenever a disco request is received
+	                sdm.setNodeInformationProvider(
+	                    discoNode,
+	                    new NodeInformationProvider() {
+	                        public List<DiscoverItems.Item> getNodeItems() {
+	                            List<DiscoverItems.Item> answer = new ArrayList<DiscoverItems.Item>();
+	                            Iterator<String> rooms=MultiUserChat.getJoinedRooms(connection);
+	                            while (rooms.hasNext()) {
+	                                answer.add(new DiscoverItems.Item(rooms.next()));
+	                            }
+	                            return answer;
+	                        }
+	
+	                        public List<String> getNodeFeatures() {
+	                            return null;
+	                        }
+	
+	                        public List<DiscoverInfo.Identity> getNodeIdentities() {
+	                            return null;
+	                        }
+	                    });
+	            	}
             }
         });
     }
